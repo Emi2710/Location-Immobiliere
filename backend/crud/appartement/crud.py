@@ -1,7 +1,6 @@
 import psycopg2
 from psycopg2 import sql
 from datetime import datetime
-import os
 
 from config import get_db_name, get_db_user, get_db_password, get_db_host
 
