@@ -18,6 +18,7 @@ CREATE TABLE appartement(
 CREATE TABLE locataire(
     id SERIAL PRIMARY KEY,
     nom VARCHAR(255) unique NOT NULL,
+    appartement_id INT,
     etat_lieux_entree TEXT, 
     etat_lieux_sortie TEXT, 
     date_entree DATE,
@@ -31,8 +32,24 @@ CREATE TABLE locataire(
 
 CREATE TABLE paiement( 
     id SERIAL PRIMARY KEY,
+    locataire_id INT,
+    appartement_id INT,
     date_paiement DATE,
     origine_paiement VARCHAR(255),
     cout INT
 );
 
+
+
+/*
+ALTER TABLE locataire 
+ADD CONSTRAINT FK_appartement
+FOREIGN KEY(appartement_id) REFERENCES appartement(id);
+
+ALTER TABLE paiement 
+ADD CONSTRAINT FK_locataire
+FOREIGN KEY(locataire_id) REFERENCES locataire(id);
+
+ALTER TABLE paiement 
+ADD CONSTRAINT FK_appartement
+FOREIGN KEY(appartement_id) REFERENCES appartement(id); */

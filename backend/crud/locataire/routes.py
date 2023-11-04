@@ -6,13 +6,14 @@ class LocataireResource(Resource):
     def post(self):
         data = request.json
         nom = data['nom']
+        appartement_id = data['appartement_id']
         etat_lieux_entree = data['etat_lieux_entree']
         etat_lieux_sortie = data['etat_lieux_sortie']
         date_entree = data['date_entree']
         date_sortie = data['date_sortie']
         solde = data['solde']
         en_regle = data['en_regle']
-        locataire_id = create_locataire(nom, etat_lieux_entree, etat_lieux_sortie, date_entree, date_sortie, solde, en_regle)
+        locataire_id = create_locataire(nom, appartement_id, etat_lieux_entree, etat_lieux_sortie, date_entree, date_sortie, solde, en_regle)
         return {'id': locataire_id}
 
     def get(self):
@@ -34,11 +35,12 @@ class LocataireDetailResource(Resource):
     def put(self, locataire_id):
         data = request.json
         nom = data['nom']
+        appartement_id = data['appartement_id']
         etat_lieux_entree = data['etat_lieux_entree']
         etat_lieux_sortie = data['etat_lieux_sortie']
         date_entree = data['date_entree']
         date_sortie = data['date_sortie']
         solde = data['solde']
         en_regle = data['en_regle']
-        update_locataire(locataire_id, nom, etat_lieux_entree, etat_lieux_sortie, date_entree, date_sortie, solde, en_regle)
+        update_locataire(locataire_id, nom, appartement_id, etat_lieux_entree, etat_lieux_sortie, date_entree, date_sortie, solde, en_regle)
         return {'message': 'Locataire updated'}
