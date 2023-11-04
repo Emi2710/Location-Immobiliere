@@ -36,5 +36,5 @@ class PaiementDetailResource(Resource):
         date_paiement = data['date_paiement']
         origine_paiement = data['origine_paiement']
         cout = data['cout']
-        update_paiement(locataire_id, appartement_id, paiement_id, date_paiement, origine_paiement, cout)
+        update_paiement(paiement_id, locataire_id, appartement_id, date_paiement, origine_paiement, cout)
         return {'message': 'Paiement updated'}

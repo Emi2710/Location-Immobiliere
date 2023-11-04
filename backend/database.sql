@@ -41,7 +41,7 @@ CREATE TABLE paiement(
 
 
 
-/*
+
 ALTER TABLE locataire 
 ADD CONSTRAINT FK_appartement
 FOREIGN KEY(appartement_id) REFERENCES appartement(id);
@@ -52,4 +52,4 @@ FOREIGN KEY(locataire_id) REFERENCES locataire(id);
 
 ALTER TABLE paiement 
 ADD CONSTRAINT FK_appartement
-FOREIGN KEY(appartement_id) REFERENCES appartement(id); */
+FOREIGN KEY(appartement_id) REFERENCES appartement(id); 
