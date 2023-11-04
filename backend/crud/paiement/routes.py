@@ -5,10 +5,12 @@ from crud.paiement.crud import create_paiement, get_paiement, delete_paiement, u
 class PaiementResource(Resource):
     def post(self):
         data = request.json
+        locataire_id = data['locataire_id']
+        appartement_id = data['appartement_id']
         date_paiement = data['date_paiement']
         origine_paiement = data['origine_paiement']
         cout = data['cout']
-        paiement_id = create_paiement(date_paiement, origine_paiement, cout)
+        paiement_id = create_paiement(locataire_id, appartement_id, date_paiement, origine_paiement, cout)
         return {'id': paiement_id}
 
     def get(self):
@@ -29,8 +31,10 @@ class PaiementDetailResource(Resource):
 
     def put(self, paiement_id):
         data = request.json
+        locataire_id = data['locataire_id']
+        appartement_id = data['appartement_id']
         date_paiement = data['date_paiement']
         origine_paiement = data['origine_paiement']
         cout = data['cout']
-        update_paiement(paiement_id, date_paiement, origine_paiement, cout)
+        update_paiement(locataire_id, appartement_id, paiement_id, date_paiement, origine_paiement, cout)
         return {'message': 'Paiement updated'}
