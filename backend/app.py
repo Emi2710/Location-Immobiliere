@@ -4,18 +4,22 @@ from flask_restful import Api
 from crud.appartement.routes import AppartementResource, AppartementDetailResource, AppartementByLocataireAppartementResource
 from crud.locataire.routes import LocataireResource, LocataireDetailResource, LocataireByAppartementResource
 from crud.paiement.routes import PaiementResource, PaiementDetailResource, LocataireByPaiementLocataireResource, AppartementByPaiementAppartementResource, PaiementByFiltersResource
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from the .env file
+load_dotenv()
 
 app = Flask(__name__)
 
 api = Api(app)
 
 # Secret key for session management
-app.secret_key = 'your_secret_key'
+app.secret_key = os.environ.get('SECRET_KEY')
 
 # Sample user data (replace with your user database)
 users = {
-    'user1': 'password1',
-    'user2': 'password2',
+    os.environ.get('USER_NAME'): os.environ.get('USER_PASSWORD'),
 }
 
 # Authentication route
@@ -47,7 +51,11 @@ def protected_route():
     else:
         return 'Not authenticated', 401
 
-
+# Define a before_request function to check authentication before any route
+@app.before_request
+def check_authentication():
+    if request.endpoint and request.endpoint != 'login' and 'username' not in session:
+        return 'Not authenticated', 401
 
 # Add your resource routes as before
 api.add_resource(AppartementResource, '/appartements')
