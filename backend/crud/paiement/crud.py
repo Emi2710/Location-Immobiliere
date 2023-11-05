@@ -107,3 +107,36 @@ def get_appartement_by_paiement_appartement_id(paiement_appartement_id):
         return appartement
     else:
         return appartement
+
+
+
+def get_paiements_by_info_and_period(locataire_id, appartement_id, start_date, end_date):
+    conn = create_connection()
+    cur = conn.cursor()
+
+    query = sql.SQL("""
+        SELECT * FROM paiement
+        WHERE locataire_id = %s
+        AND appartement_id = %s
+        AND date_paiement >= %s
+        AND date_paiement <= %s
+    """)
+    
+    cur.execute(query, (locataire_id, appartement_id, start_date, end_date))
+
+    paiements = cur.fetchall()
+    conn.close()
+
+    if paiements:
+        # Convert date objects to ISO format strings
+        formatted_paiements = [{
+            "id": row[0],
+            "locataire_id": row[1],
+            "appartement_id": row[2],
+            "date_paiement": row[3].isoformat(),
+            "origine_paiement": row[4],
+            "cout": row[5]
+        } for row in paiements]
+        return formatted_paiements
+    else:
+        return []

@@ -1,6 +1,7 @@
 from flask import request
 from flask_restful import Resource
-from crud.paiement.crud import create_paiement, get_paiement, delete_paiement, update_paiement, get_all_paiements, get_locataire_by_paiement_locataire_id,get_appartement_by_paiement_appartement_id  # Import the CRUD functions for paiement
+from datetime import datetime, timedelta
+from crud.paiement.crud import create_paiement, get_paiement, delete_paiement, update_paiement, get_all_paiements, get_locataire_by_paiement_locataire_id,get_appartement_by_paiement_appartement_id, get_paiements_by_info_and_period
 
 class PaiementResource(Resource):
     def post(self):
@@ -75,3 +76,30 @@ class AppartementByPaiementAppartementResource(Resource):
             return {'appartement': appartement_dict}
         else:
             return {'error': 'Appartement not found for the specified appartement_id'}, 404
+        
+
+
+class PaiementByFiltersResource(Resource):
+    def post(self):
+        data = request.json
+        locataire_id = data.get('locataire_id')
+        appartement_id = data.get('appartement_id')
+        start_date_str = data.get('start_date')
+        end_date_str = data.get('end_date')
+        
+        if not locataire_id or not appartement_id or not start_date_str or not end_date_str:
+            return {'error': 'Missing parameters: locataire_id, appartement_id, start_date, and end_date are required.'}, 400
+
+        try:
+            start_date = datetime.strptime(start_date_str, "%Y-%m-%d")
+            end_date = datetime.strptime(end_date_str, "%Y-%m-%d")
+        except ValueError:
+            return {'error': 'Invalid date format. Use "YYYY-MM-DD".'}, 400
+
+        # Call a function to retrieve payments based on the provided information and date range
+        payments = get_paiements_by_info_and_period(locataire_id, appartement_id, start_date, end_date)
+
+        if payments:
+            return payments
+        else:
+            return {'message': 'No payments found for the specified criteria.'}, 404
