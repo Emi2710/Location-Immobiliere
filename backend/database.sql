@@ -45,6 +45,8 @@ CREATE TABLE paiement(
 ALTER TABLE locataire 
 ADD CONSTRAINT FK_appartement
 FOREIGN KEY(appartement_id) REFERENCES appartement(id);
+ADD CONSTRAINT unique_appartement_id UNIQUE (appartement_id);
+
 
 ALTER TABLE paiement 
 ADD CONSTRAINT FK_locataire

@@ -79,3 +79,31 @@ def update_paiement(paiement_id, locataire_id, appartement_id, date_paiement, or
                 (locataire_id, appartement_id, date_paiement, origine_paiement, cout, paiement_id))
     conn.commit()
     conn.close()
+
+def get_locataire_by_paiement_locataire_id(paiement_locataire_id):
+    conn = create_connection()
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM locataire WHERE id = %s", (paiement_locataire_id,))
+    locataire = cur.fetchone()
+    conn.close()
+
+    if locataire:
+        locataire = list(locataire)  # Convert the result to a list for modification
+        locataire[5] = locataire[5].isoformat()  # Convert date_entree to ISO format
+        locataire[6] = locataire[6].isoformat()  # Convert date_sortie to ISO format
+        return locataire
+    else:
+        return locataire
+    
+def get_appartement_by_paiement_appartement_id(paiement_appartement_id):
+    conn = create_connection()
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM appartement WHERE id = %s", (paiement_appartement_id,))
+    appartement = cur.fetchone()
+    conn.close()
+
+    if appartement:
+        appartement = list(appartement)  # Convert the result to a list for modification
+        return appartement
+    else:
+        return appartement

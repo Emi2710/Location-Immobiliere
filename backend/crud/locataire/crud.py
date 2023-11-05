@@ -89,3 +89,19 @@ def update_locataire(locataire_id, nom, appartement_id, etat_lieux_entree, etat_
                 (nom, appartement_id, etat_lieux_entree, etat_lieux_sortie, date_entree, date_sortie, solde, en_regle, locataire_id))
     conn.commit()
     conn.close()
+
+
+def get_locataire_by_appartement_id(appartement_id):
+    conn = create_connection()
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM locataire WHERE appartement_id = %s", (appartement_id,))
+    locataire = cur.fetchone()
+    conn.close()
+
+    if locataire:
+        locataire = list(locataire)  # Convert the result to a list for modification
+        locataire[5] = locataire[5].isoformat()  # Convert date_entree to ISO format
+        locataire[6] = locataire[6].isoformat()  # Convert date_sortie to ISO format
+        return locataire
+    else:
+        return locataire

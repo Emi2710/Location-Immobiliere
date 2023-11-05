@@ -62,3 +62,16 @@ def update_appartement(appartement_id, adresse, complement_adresse, ville, code_
                 (adresse, complement_adresse, ville, code_postal, charges_cout, loyer_cout, depot_garantie_cout, appartement_id))
     conn.commit()
     conn.close()
+
+def get_appartement_by_locataire_appartement_id(locataire_appartement_id):
+    conn = create_connection()
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM appartement WHERE id = %s", (locataire_appartement_id,))
+    appartement = cur.fetchone()
+    conn.close()
+
+    if appartement:
+        appartement = list(appartement)  # Convert the result to a list for modification
+        return appartement
+    else:
+        return appartement

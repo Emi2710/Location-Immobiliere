@@ -1,6 +1,6 @@
 from flask import request
 from flask_restful import Resource
-from crud.locataire.crud import create_locataire, get_locataire, delete_locataire, update_locataire, get_all_locataires
+from crud.locataire.crud import create_locataire, get_locataire, delete_locataire, update_locataire, get_all_locataires, get_locataire_by_appartement_id
 
 class LocataireResource(Resource):
     def post(self):
@@ -44,3 +44,22 @@ class LocataireDetailResource(Resource):
         en_regle = data['en_regle']
         update_locataire(locataire_id, nom, appartement_id, etat_lieux_entree, etat_lieux_sortie, date_entree, date_sortie, solde, en_regle)
         return {'message': 'Locataire updated'}
+
+class LocataireByAppartementResource(Resource):
+    def get(self, appartement_id):
+        locataire = get_locataire_by_appartement_id(appartement_id)
+        if locataire:
+            locataire_dict = {
+                'id': locataire[0],
+                'nom': locataire[1],
+                'appartement_id': locataire[2],
+                'etat_lieux_entree': locataire[3],
+                'etat_lieux_sortie': locataire[4],
+                'date_entree': locataire[5],
+                'date_sortie': locataire[6],
+                'solde': locataire[7],
+                'en_regle': locataire[8]
+            }
+            return {'locataire': locataire_dict}
+        else:
+            return {'error': 'Locataire not found for the specified appartement_id'}, 404

@@ -1,7 +1,7 @@
 from flask import request
 from flask_restful import Resource
 
-from crud.appartement.crud import create_appartement, get_appartement, delete_appartement, update_appartement, get_all_appartements
+from crud.appartement.crud import create_appartement, get_appartement, delete_appartement, update_appartement, get_all_appartements, get_appartement_by_locataire_appartement_id
 
 class AppartementResource(Resource):
     def post(self):
@@ -95,3 +95,21 @@ class AppartementDetailResource(Resource):
                 return {'error': 'adresse, ville, and code_postal are required fields'}, 400  # Utilize the response code 400 (Bad Request)
         else:
             return {'error': 'Appartement not found'}, 404
+
+class AppartementByLocataireAppartementResource(Resource):
+    def get(self, locataire_appartement_id):
+        appartement = get_appartement_by_locataire_appartement_id(locataire_appartement_id)
+        if appartement:
+            appartement_dict = {
+                'id': appartement[0],
+                'adresse': appartement[1],
+                'complement_adresse': appartement[2],
+                'ville': appartement[3],
+                'code_postal': appartement[4],
+                'charges_cout': appartement[5],
+                'loyer_cout': appartement[6],
+                'depot_garantie_cout': appartement[7]
+            }
+            return {'appartement': appartement_dict}
+        else:
+            return {'error': 'Appartement not found for the specified appartement_id'}, 404
