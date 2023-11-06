@@ -6,6 +6,7 @@ from crud.locataire.routes import LocataireResource, LocataireDetailResource, Lo
 from crud.paiement.routes import PaiementResource, PaiementDetailResource, LocataireByPaiementLocataireResource, AppartementByPaiementAppartementResource, PaiementByFiltersResource
 import os
 from dotenv import load_dotenv
+from flask_cors import CORS
 
 # Load environment variables from the .env file
 load_dotenv()
@@ -13,6 +14,7 @@ load_dotenv()
 app = Flask(__name__)
 
 api = Api(app)
+CORS(app)
 
 # Secret key for session management
 app.secret_key = os.environ.get('SECRET_KEY')
