@@ -7,6 +7,7 @@ from crud.paiement.routes import PaiementResource, PaiementDetailResource, Locat
 import os
 from dotenv import load_dotenv
 from flask_cors import CORS
+from flask_session import Session
 
 # Load environment variables from the .env file
 load_dotenv()
@@ -14,10 +15,16 @@ load_dotenv()
 app = Flask(__name__)
 
 api = Api(app)
-CORS(app)
+CORS(app, supports_credentials=True, origins='http://localhost:3000')  # Replace with the actual origin of your React app
+
 
 # Secret key for session management
 app.secret_key = os.environ.get('SECRET_KEY')
+
+'''
+app.config['SESSION_TYPE'] = 'filesystem'
+
+Session(app)
 
 # Sample user data (replace with your user database)
 users = {
@@ -58,6 +65,7 @@ def protected_route():
 def check_authentication():
     if request.endpoint and request.endpoint != 'login' and 'username' not in session:
         return 'Not authenticated', 401
+'''
 
 # Add your resource routes as before
 api.add_resource(AppartementResource, '/appartements')

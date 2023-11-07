@@ -11,6 +11,7 @@ python-dotenv = "*"
 flask-cors = "*"
 flask-restful = "*"
 flask-login = "*"
+flask-session = "*"
 
 [dev-packages]
 
