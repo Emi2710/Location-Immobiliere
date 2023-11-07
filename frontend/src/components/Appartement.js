@@ -5,8 +5,6 @@ import {
   Button,
   TextField,
   Paper,
-  Grid,
-  Typography,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -34,6 +32,9 @@ const Appartement = () => {
     loyer_cout: '',
     depot_garantie_cout: ''
   });
+
+  const [isAddApartmentModalOpen, setIsAddApartmentModalOpen] = useState(false);
+
 
   const [isDialogOpen, setIsDialogOpen] = useState(false); // State to control the dialog visibility
 
@@ -72,6 +73,7 @@ const Appartement = () => {
         depot_garantie_cout: '',
       });
       fetchApartments();
+      setIsAddApartmentModalOpen(false);
     });
   };
 
@@ -166,60 +168,83 @@ const Appartement = () => {
 
   return (
     <div>
-      <h1>Apartment Management</h1>
-      
+      <h1 className='text-3xl text-center underline my-11'>Apartment Management</h1>
+
       <Paper>
-        <Grid container spacing={2}>
-          <Grid item xs={12} md={6}>
-            <Typography variant="h6">Add a New Apartment</Typography>
-            <TextField
-              label="Address"
-              name="adresse"
-              value={newApartment.adresse}
-              onChange={handleNewApartmentChange}
-            />
-            <TextField
-              label="Complement adresse"
-              name="complement_adresse"
-              value={newApartment.complement_adresse}
-              onChange={handleNewApartmentChange}
-            />
-            <TextField
-              label="City"
-              name="ville"
-              value={newApartment.ville}
-              onChange={handleNewApartmentChange}
-            />
-            <TextField
-              label="Postal Code"
-              name="code_postal"
-              value={newApartment.code_postal}
-              onChange={handleNewApartmentChange}
-            />
-            <TextField
-              label="Charges coût"
-              name="charges_cout"
-              value={newApartment.charges_cout}
-              onChange={handleNewApartmentChange}
-            />
-            <TextField
-              label="Loyer coût"
-              name="loyer_cout"
-              value={newApartment.loyer_cout}
-              onChange={handleNewApartmentChange}
-            />
-            <TextField
-              label="Dépôt de garantie coût"
-              name="depot_garantie_cout"
-              value={newApartment.depot_garantie_cout}
-              onChange={handleNewApartmentChange}
-            />
-            <Button variant="contained" onClick={handleAddApartment}>
-              Add Apartment
-            </Button>
-          </Grid>
-        </Grid>
+        {/* Button to open the add apartment modal */}
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => setIsAddApartmentModalOpen(true)}
+          sx={{my: 2}}
+        >
+          Add Apartment
+        </Button>
       </Paper>
+
+      <Dialog open={isAddApartmentModalOpen} onClose={() => setIsAddApartmentModalOpen(false)}>
+        <DialogTitle>Add New Apartment</DialogTitle>
+        <DialogContent>
+          <TextField
+            label="Address"
+            name="adresse"
+            value={newApartment.adresse}
+            onChange={handleNewApartmentChange}
+            sx={{m: 1}}
+          />
+          <TextField
+            label="Complement adresse"
+            name="complement_adresse"
+            value={newApartment.complement_adresse}
+            onChange={handleNewApartmentChange}
+            sx={{m: 1}}
+          />
+          <TextField
+            label="City"
+            name="ville"
+            value={newApartment.ville}
+            onChange={handleNewApartmentChange}
+            sx={{m: 1}}
+          />
+          <TextField
+            label="Postal Code"
+            name="code_postal"
+            value={newApartment.code_postal}
+            onChange={handleNewApartmentChange}
+            sx={{m: 1}}
+          />
+          <TextField
+            label="Charges coût"
+            name="charges_cout"
+            value={newApartment.charges_cout}
+            onChange={handleNewApartmentChange}
+            sx={{m: 1}}
+          />
+          <TextField
+            label="Loyer coût"
+            name="loyer_cout"
+            value={newApartment.loyer_cout}
+            onChange={handleNewApartmentChange}
+            sx={{m: 1}}
+          />
+          <TextField
+            label="Dépôt garantie coût"
+            name="depot_garantie_cout"
+            value={newApartment.depot_garantie_cout}
+            onChange={handleNewApartmentChange}
+            sx={{m: 1}}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setIsAddApartmentModalOpen(false)} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleAddApartment} color="primary">
+            Add
+          </Button>
+        </DialogActions>
+      </Dialog>
+
 
       <Dialog open={isDialogOpen} onClose={() => setIsDialogOpen(false)}>
         <DialogTitle>Edit Apartment</DialogTitle>
@@ -231,6 +256,7 @@ const Appartement = () => {
             onChange={(event) =>
               setUpdateApartment({ ...updateApartment, adresse: event.target.value })
             }
+            sx={{m: 1}}
           />
           <TextField
             label="Complément adresse"
@@ -239,6 +265,7 @@ const Appartement = () => {
             onChange={(event) =>
               setUpdateApartment({ ...updateApartment, complement_adresse: event.target.value })
             }
+            sx={{m: 1}}
           />
           <TextField
             label="City"
@@ -247,6 +274,7 @@ const Appartement = () => {
             onChange={(event) =>
               setUpdateApartment({ ...updateApartment, ville: event.target.value })
             }
+            sx={{m: 1}}
           />
           <TextField
             label="Postal Code"
@@ -255,6 +283,7 @@ const Appartement = () => {
             onChange={(event) =>
               setUpdateApartment({ ...updateApartment, code_postal: event.target.value })
             }
+            sx={{m: 1}}
           />
           <TextField
             label="Charges coût"
@@ -263,6 +292,7 @@ const Appartement = () => {
             onChange={(event) =>
               setUpdateApartment({ ...updateApartment, charges_cout: event.target.value })
             }
+            sx={{m: 1}}
           />
           <TextField
             label="Loyer coût"
@@ -271,6 +301,7 @@ const Appartement = () => {
             onChange={(event) =>
               setUpdateApartment({ ...updateApartment, loyer_cout: event.target.value })
             }
+            sx={{m: 1}}
           />
           <TextField
             label="Dépôt garantie coût"
@@ -279,6 +310,7 @@ const Appartement = () => {
             onChange={(event) =>
               setUpdateApartment({ ...updateApartment, depot_garantie_cout: event.target.value })
             }
+            sx={{m: 1}}
           />
         </DialogContent>
         <DialogActions>
