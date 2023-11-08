@@ -25,7 +25,25 @@ const Locataires = () => {
     en_regle: '',
   });
 
+  const [updateLocataire, setUpdateLocataire] = useState({
+    id: null,
+    nom: '',
+    appartement_id: '',
+    etat_lieux_entree: '',
+    etat_lieux_sortie: '',
+    date_entree: '',
+    date_sortie: '',
+    solde: '',
+    en_regle: '',
+  });
+
   const [isAddLocataireModalOpen, setIsAddLocataireModalOpen] = useState(false);
+
+  const [isDialogOpen, setIsDialogOpen] = useState(false); // State to control the dialog visibility
+
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [locataireToDelete, setLocataireToDelete] = useState(null);
+
 
   useEffect(() => {
     fetchLocataires();
@@ -62,6 +80,54 @@ const Locataires = () => {
     });
   };
 
+  const handleEditLocataire = (locataire) => {
+    setUpdateLocataire({
+      id: locataire.id,
+      nom: locataire.nom,
+      appartement_id: locataire.appartement_id,
+      etat_lieux_entree: locataire.etat_lieux_entree,
+      etat_lieux_sortie: locataire.etat_lieux_sortie,
+      date_entree: locataire.date_entree,
+      date_sortie: locataire.date_sortie,
+      solde: locataire.solde,
+      en_regle: locataire.en_regle,
+    });
+    setIsDialogOpen(true); // Open the dialog
+  };
+
+  const handleUpdateLocataire = () => {
+    const { id, ...updatedLocataire } = updateLocataire;
+    axios.put(`http://localhost:5000/locataires/${id}`, updatedLocataire).then(() => {
+      setUpdateLocataire({
+        id: null,
+        nom: '',
+        appartement_id: '',
+        etat_lieux_entree: '',
+        etat_lieux_sortie: '',
+        date_entree: '',
+        date_sortie: '',
+        solde: '',
+        en_regle: '',
+      });
+      fetchLocataires();
+      setIsDialogOpen(false); // Close the dialog
+    });
+  };
+
+  const openDeleteConfirmationDialog = (locataire) => {
+    setLocataireToDelete(locataire);
+    setIsDeleteDialogOpen(true);
+  };
+
+  const handleDeleteLocataireConfirmed = () => {
+  if (locataireToDelete) {
+    axios.delete(`http://localhost:5000/locataires/${locataireToDelete.id}`).then(() => {
+      fetchLocataires();
+      setIsDeleteDialogOpen(false); // Close the confirmation dialog
+    });
+  }
+};
+
   const columns = [
   { field: 'id', headerName: 'ID', width: 100 },
   { field: 'nom', headerName: 'Nom', flex: 1 },
@@ -72,6 +138,36 @@ const Locataires = () => {
   { field: 'date_sortie', headerName: 'Date Sortie', flex: 1 },
   { field: 'solde', headerName: 'Solde', flex: 1 },
   { field: 'en_regle', headerName: 'En Règle', flex: 1 },
+      {
+      field: 'update',
+      headerName: 'Update',
+      sortable: false,
+      width: 120,
+      renderCell: (params) => (
+        <Button
+          variant="outlined"
+          color="primary"
+          onClick={() => handleEditLocataire(params.row)}
+        >
+          Update
+        </Button>
+      ),
+    },
+    {
+      field: 'delete',
+      headerName: 'Delete',
+      sortable: false,
+      width: 120,
+      renderCell: (params) => (
+        <Button
+          variant="outlined"
+          color="secondary"
+          onClick={() => openDeleteConfirmationDialog(params.row)}
+        >
+          Delete
+        </Button>
+      ),
+    }
   
   
 ];
@@ -158,6 +254,110 @@ const Locataires = () => {
           </Button>
           <Button onClick={handleAddLocataire} color="primary">
             Add
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={isDialogOpen} onClose={() => setIsDialogOpen(false)}>
+        <DialogTitle>Edit Apartment</DialogTitle>
+        <DialogContent>
+          <TextField
+            label="Nom"
+            name="nom"
+            value={updateLocataire.nom}
+            onChange={(event) =>
+              setUpdateLocataire({ ...updateLocataire, nom: event.target.value })
+            }
+            sx={{ m: 1 }}
+          />
+          <TextField
+            label="Appartement ID"
+            name="appartement_id"
+            value={updateLocataire.appartement_id}
+            onChange={(event) =>
+              setUpdateLocataire({ ...updateLocataire, appartement_id: event.target.value })
+            }
+            sx={{ m: 1 }}
+          />
+          <TextField
+            label="État Lieux Entrée"
+            name="etat_lieux_entree"
+            value={updateLocataire.etat_lieux_entree}
+            onChange={(event) =>
+              setUpdateLocataire({ ...updateLocataire, etat_lieux_entree: event.target.value })
+            }
+            sx={{ m: 1 }}
+          />
+          <TextField
+            label="État Lieux Sortie"
+            name="etat_lieux_sortie"
+            value={updateLocataire.etat_lieux_sortie}
+            onChange={(event) =>
+              setUpdateLocataire({ ...updateLocataire, etat_lieux_sortie: event.target.value })
+            }
+            sx={{ m: 1 }}
+          />
+          <TextField
+            label="Date Entrée"
+            name="date_entree"
+            value={updateLocataire.date_entree}
+            onChange={(event) =>
+              setUpdateLocataire({ ...updateLocataire, date_entree: event.target.value })
+            }
+            sx={{ m: 1 }}
+          />
+          <TextField
+            label="Date Sortie"
+            name="date_sortie"
+            value={updateLocataire.date_sortie}
+            onChange={(event) =>
+              setUpdateLocataire({ ...updateLocataire, date_sortie: event.target.value })
+            }
+            sx={{ m: 1 }}
+          />
+          <TextField
+            label="Solde"
+            name="solde"
+            value={updateLocataire.solde}
+            onChange={(event) =>
+              setUpdateLocataire({ ...updateLocataire, solde: event.target.value })
+            }
+            sx={{ m: 1 }}
+          />
+          <TextField
+            label="En Règle"
+            name="en_regle"
+            value={updateLocataire.en_regle}
+            onChange={(event) =>
+              setUpdateLocataire({ ...updateLocataire, en_regle: event.target.value })
+            }
+            sx={{ m: 1 }}
+          />
+          
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setIsDialogOpen(false)} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleUpdateLocataire} color="primary">
+            Update
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={isDeleteDialogOpen} onClose={() => setIsDeleteDialogOpen(false)}>
+        <DialogTitle>Confirm Delete</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to delete this apartment?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setIsDeleteDialogOpen(false)} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleDeleteLocataireConfirmed} color="primary">
+            Delete
           </Button>
         </DialogActions>
       </Dialog>
