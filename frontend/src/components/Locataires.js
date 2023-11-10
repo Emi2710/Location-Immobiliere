@@ -349,7 +349,7 @@ const Locataires = () => {
         <DialogTitle>Confirm Delete</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Are you sure you want to delete this apartment?
+            Are you sure you want to delete this locataire ?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
