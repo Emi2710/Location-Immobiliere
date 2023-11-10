@@ -10,6 +10,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
+  Modal,
 } from '@mui/material';
 
 const Locataires = () => {
@@ -36,6 +37,7 @@ const Locataires = () => {
     solde: '',
     en_regle: '',
   });
+
 
   const [isAddLocataireModalOpen, setIsAddLocataireModalOpen] = useState(false);
 
@@ -167,12 +169,69 @@ const Locataires = () => {
           Delete
         </Button>
       ),
-    }
-  
-  
+    },
+    {
+      field: 'fetchPayments',
+      headerName: 'Paiements',
+      sortable: false,
+      width: 120,
+      renderCell: (params) => (
+        <Button
+          variant="outlined"
+          color="secondary"
+          onClick={() => handleGetPaiement(params.row)}
+        >
+          Paiements
+        </Button>
+      ),
+    },
 ];
 
+const [open, setOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    locataire_id: '',
+    appartement_id: '',
+    start_date: '',
+    end_date: '',
+  });
+  const [payments, setPayments] = useState([]);
 
+  const handleOpen = () => setOpen(true);
+
+  const handleClose = () => setOpen(false);
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = () => {
+    // Adjust the URL based on your Flask API endpoint
+    axios.post('http://localhost:5000/paiements/filter', formData)
+      .then((response) => {
+        setPayments(response.data);
+        setOpen(true);
+      })
+      .catch((error) => {
+        console.error('Error fetching payments:', error);
+      });
+  };
+
+  const handleGetPaiement = (locataire) => {
+    setFormData({
+      locataire_id: locataire.id,
+      appartement_id: locataire.appartement_id,
+      start_date: '',
+      end_date: '',
+      
+    });
+    handleOpen(); // Open the dialog
+  };
+ 
+
+  
   return (
     <div>
       <h1 className='text-3xl text-center underline my-11 mt-24'>Locataire Management</h1>
@@ -362,6 +421,52 @@ const Locataires = () => {
         </DialogActions>
       </Dialog>
 
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Récuperer les paiements</DialogTitle>
+        <DialogContent>
+          <TextField
+            label="Locataire ID"
+            name="locataire_id"
+            value={formData.locataire_id}
+            onChange={handleChange}
+            sx={{ m: 1 }}
+          />
+          <TextField
+            label="Appartement ID"
+            name="appartement_id"
+            value={formData.appartement_id}
+            onChange={handleChange}
+            sx={{ m: 1 }}
+          />
+          <TextField
+            label="Start Date"
+            name="start_date"
+            value={formData.start_date}
+            onChange={handleChange}
+            sx={{ m: 1 }}
+          />
+          <TextField
+            label="End Date"
+            name="end_date"
+            value={formData.end_date}
+            onChange={handleChange}
+            sx={{ m: 1 }}
+          />
+          <DialogActions>
+            <Button onClick={handleSubmit}>Envoyer</Button>
+          </DialogActions>
+
+          <DialogTitle>Paiements:</DialogTitle>
+          <ul>
+            {payments.map((payment) => (
+              <li key={payment.id}>
+                {`ID: ${payment.id}, Locataire ID: ${payment.locataire_id}, Appartement ID: ${payment.appartement_id}, Date: ${payment.date_paiement}, Cost: ${payment.cout}`}
+              </li>
+            ))}
+          </ul>
+        </DialogContent>
+      </Dialog>
+      
       <div style={{ height: 400, width: '100%', marginTop: 20 }}>
         <DataGrid rows={locataires} columns={columns} pageSize={10} />
       </div>
