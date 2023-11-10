@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Document, Page } from 'react-pdf';
+import { saveAs } from 'file-saver'
 import { DataGrid } from '@mui/x-data-grid';
 import {
   Button,
@@ -197,6 +199,8 @@ const [open, setOpen] = useState(false);
     end_date: '',
   });
   const [payments, setPayments] = useState([]);
+  //const [pdfData, setPdfData] = useState(null);
+
 
   const handleOpen = () => setOpen(true);
 
@@ -209,7 +213,7 @@ const [open, setOpen] = useState(false);
     });
   };
 
-  const handleSubmit = () => {
+  /*const handleSubmit = () => {
     // Adjust the URL based on your Flask API endpoint
     axios.post('http://localhost:5000/paiements/filter', formData)
       .then((response) => {
@@ -219,7 +223,21 @@ const [open, setOpen] = useState(false);
       .catch((error) => {
         console.error('Error fetching payments:', error);
       });
-  };
+  };*/
+
+
+  /*const handleDownload = async () => {
+    try {
+      const response = await axios.post('http://localhost:5000/paiements/filter', formData, { responseType: 'blob' });
+
+      const blob = new Blob([response.data], { type: 'application/pdf' });
+      const url = URL.createObjectURL(blob);
+      setPdfData(url);
+    } catch (error) {
+      console.error('Error downloading PDF:', error);
+    }
+  };*/
+
 
   const handleGetPaiement = (locataire) => {
     setFormData({
@@ -231,6 +249,23 @@ const [open, setOpen] = useState(false);
     });
     handleOpen(); // Open the dialog
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post('http://localhost:5000/paiements/filter', formData, {
+        responseType: 'arraybuffer',
+      });
+
+      const blob = new Blob([response.data], { type: 'application/pdf' });
+      saveAs(blob, 'payment_details.pdf');
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      // Handle error accordingly, e.g., show an error message to the user
+    }
+  };
+
  
   
   return (
@@ -424,65 +459,48 @@ const [open, setOpen] = useState(false);
 
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Récuperer les paiements</DialogTitle>
-        <DialogContent>
-          <TextField
-            label="Locataire ID"
-            name="locataire_id"
-            value={formData.locataire_id}
-            onChange={handleChange}
-            sx={{ m: 1 }}
-          />
-          <TextField
-            label="Appartement ID"
-            name="appartement_id"
-            value={formData.appartement_id}
-            onChange={handleChange}
-            sx={{ m: 1 }}
-          />
-          <TextField
-            label="Start Date"
-            name="start_date"
-            value={formData.start_date}
-            onChange={handleChange}
-            sx={{ m: 1 }}
-          />
-          <TextField
-            label="End Date"
-            name="end_date"
-            value={formData.end_date}
-            onChange={handleChange}
-            sx={{ m: 1 }}
-          />
-          <DialogActions>
-            <Button onClick={handleSubmit}>Envoyer</Button>
-          </DialogActions>
+        <form onSubmit={handleSubmit}>
+          <DialogContent>
+            <TextField
+              label="Locataire ID"
+              name="locataire_id"
+              value={formData.locataire_id}
+              onChange={handleChange}
+              sx={{m: 1}}
+            />
 
-          <DialogTitle>Paiements:</DialogTitle>
-          <TableContainer component={Paper}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>ID</TableCell>
-                  <TableCell>Locataire ID</TableCell>
-                  <TableCell>Appartement ID</TableCell>
-                  <TableCell>Date</TableCell>
-                  <TableCell>Cost</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {payments.map((payment) => (
-                  <TableRow key={payment.id}>
-                    <TableCell>{payment.id}</TableCell>
-                    <TableCell>{payment.locataire_id}</TableCell>
-                    <TableCell>{payment.appartement_id}</TableCell>
-                    <TableCell>{payment.date_paiement}</TableCell>
-                    <TableCell>{payment.cout}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </DialogContent>
+            <TextField
+              label="Appartement ID"
+              name="appartement_id"
+              value={formData.appartement_id}
+              onChange={handleChange}
+              sx={{m: 1}}
+            />
+
+            <TextField
+              label="Start Date"
+              name="start_date"
+              value={formData.start_date}
+              onChange={handleChange}
+              sx={{m: 1}}
+            />
+
+            <TextField
+              label="End date"
+              name="end_date"
+              value={formData.end_date}
+              onChange={handleChange}
+              sx={{m: 1}}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button type="submit">Generate PDF</Button>
+          </DialogActions>
+       
+          
+        
+        
+      </form>
       </Dialog>
       
       <div style={{ height: 400, width: '100%', marginTop: 20 }}>

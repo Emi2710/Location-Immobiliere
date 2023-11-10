@@ -2,6 +2,8 @@ import psycopg2
 from psycopg2 import sql
 from config import get_db_name, get_db_user, get_db_password, get_db_host
 from datetime import date
+from reportlab.pdfgen import canvas
+from io import BytesIO
 
 def create_connection():
     return psycopg2.connect(
@@ -141,3 +143,21 @@ def get_paiements_by_info_and_period(locataire_id, appartement_id, start_date, e
         return formatted_paiements
     else:
         return []
+
+def generate_pdf(payments):
+    buffer = BytesIO()
+    pdf = canvas.Canvas(buffer)
+    
+    # Customize the PDF content based on your requirements
+    pdf.drawString(100, 800, "Payment Details")
+    
+    y_position = 780
+    for payment in payments:
+        y_position -= 20
+        pdf.drawString(100, y_position, f"ID: {payment['id']}")
+        pdf.drawString(150, y_position, f"Date: {payment['date_paiement']}")
+        pdf.drawString(200, y_position, f"Cost: {payment['cout']}")
+    
+    pdf.save()
+    buffer.seek(0)
+    return buffer

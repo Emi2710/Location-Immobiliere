@@ -1,7 +1,7 @@
-from flask import request
+from flask import request, send_file
 from flask_restful import Resource
 from datetime import datetime, timedelta
-from crud.paiement.crud import create_paiement, get_paiement, delete_paiement, update_paiement, get_all_paiements, get_locataire_by_paiement_locataire_id,get_appartement_by_paiement_appartement_id, get_paiements_by_info_and_period
+from crud.paiement.crud import create_paiement, get_paiement, delete_paiement, update_paiement, get_all_paiements, get_locataire_by_paiement_locataire_id,get_appartement_by_paiement_appartement_id, get_paiements_by_info_and_period, generate_pdf
 
 class PaiementResource(Resource):
     def post(self):
@@ -100,6 +100,13 @@ class PaiementByFiltersResource(Resource):
         payments = get_paiements_by_info_and_period(locataire_id, appartement_id, start_date, end_date)
 
         if payments:
-            return payments
+            # Generate PDF and send it as a response
+            pdf_buffer = generate_pdf(payments)
+            return send_file(
+                pdf_buffer,
+                download_name="payment_details.pdf",
+                as_attachment=True,
+                mimetype="application/pdf"
+            )
         else:
             return {'message': 'No payments found for the specified criteria.'}, 404

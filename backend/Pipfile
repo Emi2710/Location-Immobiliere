@@ -12,6 +12,7 @@ flask-cors = "*"
 flask-restful = "*"
 flask-login = "*"
 flask-session = "*"
+reportlab = "*"
 
 [dev-packages]
 
