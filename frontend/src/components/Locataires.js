@@ -10,8 +10,10 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
-  Modal,
+  Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
 } from '@mui/material';
+
+
 
 const Locataires = () => {
   const [locataires, setLocataires] = useState([]);
@@ -178,7 +180,7 @@ const Locataires = () => {
       renderCell: (params) => (
         <Button
           variant="outlined"
-          color="secondary"
+          color="success"
           onClick={() => handleGetPaiement(params.row)}
         >
           Paiements
@@ -230,7 +232,6 @@ const [open, setOpen] = useState(false);
     handleOpen(); // Open the dialog
   };
  
-
   
   return (
     <div>
@@ -457,13 +458,30 @@ const [open, setOpen] = useState(false);
           </DialogActions>
 
           <DialogTitle>Paiements:</DialogTitle>
-          <ul>
-            {payments.map((payment) => (
-              <li key={payment.id}>
-                {`ID: ${payment.id}, Locataire ID: ${payment.locataire_id}, Appartement ID: ${payment.appartement_id}, Date: ${payment.date_paiement}, Cost: ${payment.cout}`}
-              </li>
-            ))}
-          </ul>
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>ID</TableCell>
+                  <TableCell>Locataire ID</TableCell>
+                  <TableCell>Appartement ID</TableCell>
+                  <TableCell>Date</TableCell>
+                  <TableCell>Cost</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {payments.map((payment) => (
+                  <TableRow key={payment.id}>
+                    <TableCell>{payment.id}</TableCell>
+                    <TableCell>{payment.locataire_id}</TableCell>
+                    <TableCell>{payment.appartement_id}</TableCell>
+                    <TableCell>{payment.date_paiement}</TableCell>
+                    <TableCell>{payment.cout}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </DialogContent>
       </Dialog>
       
