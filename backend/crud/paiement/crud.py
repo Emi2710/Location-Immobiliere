@@ -2,8 +2,10 @@ import psycopg2
 from psycopg2 import sql
 from config import get_db_name, get_db_user, get_db_password, get_db_host
 from datetime import date
-from reportlab.pdfgen import canvas
 from io import BytesIO
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 
 def create_connection():
     return psycopg2.connect(
@@ -117,12 +119,15 @@ def get_paiements_by_info_and_period(locataire_id, appartement_id, start_date, e
     cur = conn.cursor()
 
     query = sql.SQL("""
-        SELECT * FROM paiement
-        WHERE locataire_id = %s
-        AND appartement_id = %s
-        AND date_paiement >= %s
-        AND date_paiement <= %s
-        ORDER BY date_paiement DESC
+        SELECT p.*
+        FROM paiement p
+        JOIN locataire l ON p.locataire_id = l.id
+        WHERE p.locataire_id = %s
+        AND p.appartement_id = %s
+        AND p.date_paiement >= %s
+        AND p.date_paiement <= %s
+        AND l.en_regle = TRUE
+        ORDER BY p.date_paiement DESC
     """)
     
     cur.execute(query, (locataire_id, appartement_id, start_date, end_date))
@@ -146,18 +151,35 @@ def get_paiements_by_info_and_period(locataire_id, appartement_id, start_date, e
 
 def generate_pdf(payments):
     buffer = BytesIO()
-    pdf = canvas.Canvas(buffer)
+    pdf = SimpleDocTemplate(buffer, pagesize=letter)
     
     # Customize the PDF content based on your requirements
-    pdf.drawString(100, 800, "Payment Details")
-    
-    y_position = 780
+    elements = []
+
+    data = [['ID', 'Date', 'Origine', 'Cost']]
     for payment in payments:
-        y_position -= 20
-        pdf.drawString(100, y_position, f"ID: {payment['id']}")
-        pdf.drawString(150, y_position, f"Date: {payment['date_paiement']}")
-        pdf.drawString(200, y_position, f"Cost: {payment['cout']}")
-    
-    pdf.save()
+        data.append([payment['id'], payment['date_paiement'], payment['origine_paiement'], payment['cout']])
+
+    # Calculate the width of the page
+    width, height = letter
+
+    # Set the table width to 3/4 of the page width
+    table_width = width * 3 / 4
+
+    # Create a table and set its style
+    table = Table(data, colWidths=[table_width / len(data[0]) for _ in data[0]])
+    style = TableStyle([('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+                        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+                        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+                        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+                        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+                        ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+                        ('GRID', (0, 0), (-1, -1), 1, colors.black)])
+    table.setStyle(style)
+
+    # Add the table to the PDF document
+    elements.append(table)
+
+    pdf.build(elements)
     buffer.seek(0)
     return buffer

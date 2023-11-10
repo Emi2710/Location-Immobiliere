@@ -459,6 +459,7 @@ const [open, setOpen] = useState(false);
 
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Récuperer les paiements</DialogTitle>
+        
         <form onSubmit={handleSubmit}>
           <DialogContent>
             <TextField
