@@ -120,6 +120,7 @@ def get_paiements_by_info_and_period(locataire_id, appartement_id, start_date, e
         AND appartement_id = %s
         AND date_paiement >= %s
         AND date_paiement <= %s
+        ORDER BY date_paiement DESC
     """)
     
     cur.execute(query, (locataire_id, appartement_id, start_date, end_date))
