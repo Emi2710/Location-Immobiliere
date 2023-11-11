@@ -10,6 +10,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
+  MenuItem,
 } from '@mui/material';
 
 const Paiements = () => {
@@ -198,12 +199,16 @@ const Paiements = () => {
             sx={{ m: 1 }}
           />
           <TextField
+            select
             label="Origine Paiement"
             name="origine_paiement"
             value={newPaiement.origine_paiement}
             onChange={handleNewPaiementChange}
             sx={{ m: 1 }}
-          />
+          >
+            <MenuItem value="Locataire">Locataire</MenuItem>
+            <MenuItem value="CAF">CAF</MenuItem>
+          </TextField>
           <TextField
             label="Prix payé"
             name="cout"
@@ -253,7 +258,9 @@ const Paiements = () => {
             }
             sx={{ m: 1 }}
           />
+          
           <TextField
+            select
             label="Origine Paiement"
             name="origine_paiement"
             value={updatePaiement.origine_paiement}
@@ -261,7 +268,10 @@ const Paiements = () => {
               setUpdatePaiement({ ...updatePaiement, origine_paiement: event.target.value })
             }
             sx={{ m: 1 }}
-          />
+          >
+            <MenuItem value="Locataire">Locataire</MenuItem>
+            <MenuItem value="CAF">CAF</MenuItem>
+          </TextField>
           <TextField
             label="Prix payé"
             name="cout"
