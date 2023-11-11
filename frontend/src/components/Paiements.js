@@ -122,7 +122,7 @@ const Paiements = () => {
   { field: 'cout', headerName: 'Prix payé', flex: 1 },
       {
       field: 'update',
-      headerName: 'Update',
+      headerName: 'Modifier',
       sortable: false,
       width: 120,
       renderCell: (params) => (
@@ -131,13 +131,13 @@ const Paiements = () => {
           color="primary"
           onClick={() => handleEditPaiement(params.row)}
         >
-          Update
+          Modifier
         </Button>
       ),
     },
     {
       field: 'delete',
-      headerName: 'Delete',
+      headerName: 'Supprimer',
       sortable: false,
       width: 120,
       renderCell: (params) => (
@@ -146,7 +146,7 @@ const Paiements = () => {
           color="secondary"
           onClick={() => openDeleteConfirmationDialog(params.row)}
         >
-          Delete
+          Supprimer
         </Button>
       ),
     }
@@ -157,7 +157,7 @@ const Paiements = () => {
 
   return (
     <div>
-      <h1 className='text-3xl text-center underline my-11 mt-24'>Paiements Management</h1>
+      <h1 className='text-3xl text-center underline my-11 mt-24'>Gérer les paiements</h1>
 
       <Paper>
         <Button
@@ -166,12 +166,12 @@ const Paiements = () => {
           onClick={() => setIsAddPaiementModalOpen(true)}
           sx={{ my: 2 }}
         >
-          Add Paiement
+          Ajouter un paiement
         </Button>
       </Paper>
 
       <Dialog open={isAddPaiementModalOpen} onClose={() => setIsAddPaiementModalOpen(false)}>
-        <DialogTitle>Add New Paiement</DialogTitle>
+        <DialogTitle>Ajouter un nouveau paiement</DialogTitle>
         <DialogContent>
           <TextField
             label="Locataire ID"
@@ -215,16 +215,16 @@ const Paiements = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setIsAddPaiementModalOpen(false)} color="primary">
-            Cancel
+            Annuler
           </Button>
           <Button onClick={handleAddPaiement} color="primary">
-            Add
+            Ajouter
           </Button>
         </DialogActions>
       </Dialog>
 
       <Dialog open={isDialogOpen} onClose={() => setIsDialogOpen(false)}>
-        <DialogTitle>Edit Paiement</DialogTitle>
+        <DialogTitle>Modifier un paiement</DialogTitle>
         <DialogContent>
           <TextField
             label="Locataire ID"
@@ -275,27 +275,27 @@ const Paiements = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setIsDialogOpen(false)} color="primary">
-            Cancel
+            Annuler
           </Button>
           <Button onClick={handleUpdatePaiement} color="primary">
-            Update
+            Modifier
           </Button>
         </DialogActions>
       </Dialog>
 
       <Dialog open={isDeleteDialogOpen} onClose={() => setIsDeleteDialogOpen(false)}>
-        <DialogTitle>Confirm Delete</DialogTitle>
+        <DialogTitle>Confirmer la suppression</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Are you sure you want to delete this paiement?
+            Etes vous sur de vouloir supprimer ce paiement ?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setIsDeleteDialogOpen(false)} color="primary">
-            Cancel
+            Annuler
           </Button>
           <Button onClick={handleDeletePaiementConfirmed} color="primary">
-            Delete
+            Supprimer
           </Button>
         </DialogActions>
       </Dialog>

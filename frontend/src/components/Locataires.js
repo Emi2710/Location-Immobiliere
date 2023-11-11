@@ -12,7 +12,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
-  Table, TableBody, TableCell, TableContainer, TableHead, TableRow, MenuItem,
+  MenuItem,
 } from '@mui/material';
 
 
@@ -146,7 +146,7 @@ const Locataires = () => {
   { field: 'en_regle', headerName: 'En Règle', flex: 1 },
       {
       field: 'update',
-      headerName: 'Update',
+      headerName: 'Modifier',
       sortable: false,
       width: 120,
       renderCell: (params) => (
@@ -155,13 +155,13 @@ const Locataires = () => {
           color="primary"
           onClick={() => handleEditLocataire(params.row)}
         >
-          Update
+          Modifier
         </Button>
       ),
     },
     {
       field: 'delete',
-      headerName: 'Delete',
+      headerName: 'Supprimer',
       sortable: false,
       width: 120,
       renderCell: (params) => (
@@ -170,7 +170,7 @@ const Locataires = () => {
           color="secondary"
           onClick={() => openDeleteConfirmationDialog(params.row)}
         >
-          Delete
+          Supprimer
         </Button>
       ),
     },
@@ -284,7 +284,7 @@ const [open, setOpen] = useState(false);
   
   return (
     <div>
-      <h1 className='text-3xl text-center underline my-11 mt-24'>Locataire Management</h1>
+      <h1 className='text-3xl text-center underline my-11 mt-24'>Gérer les locataires</h1>
 
       <Paper>
         <Button
@@ -293,12 +293,12 @@ const [open, setOpen] = useState(false);
           onClick={() => setIsAddLocataireModalOpen(true)}
           sx={{ my: 2 }}
         >
-          Add Locataire
+          Ajouter un locataire
         </Button>
       </Paper>
 
       <Dialog open={isAddLocataireModalOpen} onClose={() => setIsAddLocataireModalOpen(false)}>
-        <DialogTitle>Add New Locataire</DialogTitle>
+        <DialogTitle>Ajouter un nouveau locataire</DialogTitle>
         <DialogContent>
           <TextField
             label="Nom"
@@ -367,16 +367,16 @@ const [open, setOpen] = useState(false);
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setIsAddLocataireModalOpen(false)} color="primary">
-            Cancel
+            Annuler
           </Button>
           <Button onClick={handleAddLocataire} color="primary">
-            Add
+            Ajouter
           </Button>
         </DialogActions>
       </Dialog>
 
       <Dialog open={isDialogOpen} onClose={() => setIsDialogOpen(false)}>
-        <DialogTitle>Edit Apartment</DialogTitle>
+        <DialogTitle>Modifier un appartement</DialogTitle>
         <DialogContent>
           <TextField
             label="Nom"
@@ -462,27 +462,27 @@ const [open, setOpen] = useState(false);
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setIsDialogOpen(false)} color="primary">
-            Cancel
+            Annuler
           </Button>
           <Button onClick={handleUpdateLocataire} color="primary">
-            Update
+            Modifier
           </Button>
         </DialogActions>
       </Dialog>
 
       <Dialog open={isDeleteDialogOpen} onClose={() => setIsDeleteDialogOpen(false)}>
-        <DialogTitle>Confirm Delete</DialogTitle>
+        <DialogTitle>Confirmer la suppression</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Are you sure you want to delete this locataire ?
+            Etes vous sûr de vouloir supprimer ce locataire ?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setIsDeleteDialogOpen(false)} color="primary">
-            Cancel
+            Annuler
           </Button>
           <Button onClick={handleDeleteLocataireConfirmed} color="primary">
-            Delete
+            Supprimer
           </Button>
         </DialogActions>
       </Dialog>
@@ -527,7 +527,7 @@ const [open, setOpen] = useState(false);
             />
           </DialogContent>
           <DialogActions>
-            <Button type="submit">Generate PDF</Button>
+            <Button type="submit">Générer PDF</Button>
           </DialogActions>
        
           

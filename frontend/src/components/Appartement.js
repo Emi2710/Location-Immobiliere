@@ -11,7 +11,6 @@ import {
   DialogContentText,
   DialogActions,
   Alert, } from '@mui/material';
-import { ToastContainer, toast } from 'react-toastify';
 
 
 const Appartement = () => {
@@ -257,16 +256,16 @@ const Appartement = () => {
 
   const columns = [
     { field: 'id', headerName: 'ID', width: 100 },
-    { field: 'adresse', headerName: 'Address', flex: 1 },
-    { field: 'complement_adresse', headerName: 'Complément adresse', flex: 1 },
-    { field: 'ville', headerName: 'City', flex: 1 },
-    { field: 'code_postal', headerName: 'Postal Code', width: 150 },
+    { field: 'adresse', headerName: 'Adresse', flex: 1 },
+    { field: 'complement_adresse', headerName: "Complément d'adresse", flex: 1 },
+    { field: 'ville', headerName: 'Ville', flex: 1 },
+    { field: 'code_postal', headerName: 'Code Postal', width: 150 },
     { field: 'charges_cout', headerName: 'Coût des charges', flex: 1 },
     { field: 'loyer_cout', headerName: 'Coût du loyer', flex: 1 },
     { field: 'depot_garantie_cout', headerName: 'Coût de dépôt de garantie', flex: 1 },
     {
       field: 'update',
-      headerName: 'Update',
+      headerName: 'Modifier',
       sortable: false,
       width: 120,
       renderCell: (params) => (
@@ -275,13 +274,13 @@ const Appartement = () => {
           color="primary"
           onClick={() => handleEditApartment(params.row)}
         >
-          Update
+          Modifier
         </Button>
       ),
     },
     {
       field: 'delete',
-      headerName: 'Delete',
+      headerName: 'Supprimer',
       sortable: false,
       width: 120,
       renderCell: (params) => (
@@ -290,7 +289,7 @@ const Appartement = () => {
           color="secondary"
           onClick={() => openDeleteConfirmationDialog(params.row)}
         >
-          Delete
+          Supprimer
         </Button>
       ),
     }
@@ -301,7 +300,7 @@ const Appartement = () => {
     <div>
       {successMessage && <Alert severity='success' variant='filled' sx={{position: 'fixed', zIndex: 'tooltip'}} >{successMessage}</Alert>}
       {errorMessage && <Alert severity='error' variant='filled' sx={{position: 'fixed', zIndex: 'tooltip'}} >{errorMessage}</Alert>}
-      <h1 className='text-3xl text-center underline my-11'>Apartment Management</h1>
+      <h1 className='text-3xl text-center underline my-11'>Gérer les apartments</h1>
 
       <Paper>
         {/* Button to open the add apartment modal */}
@@ -311,17 +310,17 @@ const Appartement = () => {
           onClick={() => setIsAddApartmentModalOpen(true)}
           sx={{my: 2}}
         >
-          Add Apartment
+          Ajouter un appartement
         </Button>
       </Paper>
 
       <Dialog open={isAddApartmentModalOpen} onClose={() => setIsAddApartmentModalOpen(false)}>
         
 
-        <DialogTitle>Add New Apartment</DialogTitle>
+        <DialogTitle>Ajouter un nouvel appartement</DialogTitle>
         <DialogContent>
           <TextField
-            label="Address"
+            label="Adresse"
             name="adresse"
             value={newApartment.adresse}
             onChange={handleNewApartmentChange}
@@ -329,14 +328,14 @@ const Appartement = () => {
             required
           />
           <TextField
-            label="Complement adresse"
+            label="Complément d'adresse"
             name="complement_adresse"
             value={newApartment.complement_adresse}
             onChange={handleNewApartmentChange}
             sx={{m: 1}}
           />
           <TextField
-            label="City"
+            label="Ville"
             name="ville"
             value={newApartment.ville}
             onChange={handleNewApartmentChange}
@@ -344,7 +343,7 @@ const Appartement = () => {
             required
           />
           <TextField
-            label="Postal Code"
+            label="Code Postal"
             name="code_postal"
             type="number"
             value={newApartment.code_postal}
@@ -382,10 +381,10 @@ const Appartement = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setIsAddApartmentModalOpen(false)} color="primary">
-            Cancel
+            Annuler
           </Button>
           <Button onClick={handleAddApartment} color="primary">
-            Add
+            Ajouter
           </Button>
         </DialogActions>
       </Dialog>
@@ -394,11 +393,11 @@ const Appartement = () => {
       <Dialog open={isDialogOpen} onClose={() => setIsDialogOpen(false)}>
         {errorMessage && <Alert severity='error'>{errorMessage}</Alert>}
         
-        <DialogTitle>Edit Apartment</DialogTitle>
+        <DialogTitle>Modifier un appartement</DialogTitle>
         <DialogContent>
           <TextField
             required
-            label="Address"
+            label="Adresse"
             name="adresse"
             value={updateApartment.adresse}
             onChange={(event) =>
@@ -407,7 +406,7 @@ const Appartement = () => {
             sx={{m: 1}}
           />
           <TextField
-            label="Complément adresse"
+            label="Complément d'adresse"
             name="complement_adresse"
             value={updateApartment.complement_adresse}
             onChange={(event) =>
@@ -417,7 +416,7 @@ const Appartement = () => {
           />
           <TextField
             required
-            label="City"
+            label="Ville"
             name="ville"
             value={updateApartment.ville}
             onChange={(event) =>
@@ -427,7 +426,7 @@ const Appartement = () => {
           />
           <TextField
             required
-            label="Postal Code"
+            label="Code Postal"
             name="code_postal"
             type="number"
             value={updateApartment.code_postal}
@@ -472,27 +471,27 @@ const Appartement = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setIsDialogOpen(false)} color="primary">
-            Cancel
+            Annuler
           </Button>
           <Button onClick={handleUpdateApartment} color="primary">
-            Update
+            Modifer
           </Button>
         </DialogActions>
       </Dialog>
 
       <Dialog open={isDeleteDialogOpen} onClose={() => setIsDeleteDialogOpen(false)}>
-        <DialogTitle>Confirm Delete</DialogTitle>
+        <DialogTitle>Confirmer la suppression</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Are you sure you want to delete this apartment?
+            Etes vous sûr de vouloir supprimer cet appartement ?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setIsDeleteDialogOpen(false)} color="primary">
-            Cancel
+            Annuler
           </Button>
           <Button onClick={handleDeleteApartmentConfirmed} color="primary">
-            Delete
+            Supprimer
           </Button>
         </DialogActions>
       </Dialog>
