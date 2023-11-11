@@ -176,6 +176,7 @@ const Paiements = () => {
           <TextField
             label="Locataire ID"
             name="locataire_id"
+            type="number"
             value={newPaiement.locataire_id}
             onChange={handleNewPaiementChange}
             sx={{ m: 1 }}
@@ -183,6 +184,7 @@ const Paiements = () => {
           <TextField
             label="Appartement ID"
             name="appartement_id"
+            type="number"
             value={newPaiement.appartement_id}
             onChange={handleNewPaiementChange}
             sx={{ m: 1 }}
@@ -190,6 +192,7 @@ const Paiements = () => {
           <TextField
             label="Date Paiement"
             name="date_paiement"
+            helperText="AAAA-MM-JJ (Ex:2023-01-15)"
             value={newPaiement.date_paiement}
             onChange={handleNewPaiementChange}
             sx={{ m: 1 }}
@@ -204,6 +207,7 @@ const Paiements = () => {
           <TextField
             label="Prix payé"
             name="cout"
+            type="number"
             value={newPaiement.cout}
             onChange={handleNewPaiementChange}
             sx={{ m: 1 }}

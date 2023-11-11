@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Document, Page } from 'react-pdf';
 import { saveAs } from 'file-saver'
 import { DataGrid } from '@mui/x-data-grid';
+
 import {
   Button,
   TextField,
@@ -12,7 +12,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
-  Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
+  Table, TableBody, TableCell, TableContainer, TableHead, TableRow, MenuItem,
 } from '@mui/material';
 
 
@@ -331,6 +331,7 @@ const [open, setOpen] = useState(false);
           <TextField
             label="Date Entrée"
             name="date_entree"
+            helperText="AAAA-MM-JJ (Ex:2023-01-15)"
             value={newLocataire.date_entree}
             onChange={handleNewLocataireChange}
             sx={{ m: 1 }}
@@ -338,6 +339,7 @@ const [open, setOpen] = useState(false);
           <TextField
             label="Date Sortie"
             name="date_sortie"
+            helperText="AAAA-MM-JJ (Ex:2023-12-15)"
             value={newLocataire.date_sortie}
             onChange={handleNewLocataireChange}
             sx={{ m: 1 }}
@@ -350,12 +352,18 @@ const [open, setOpen] = useState(false);
             sx={{ m: 1 }}
           />
           <TextField
+            select
             label="En Règle"
             name="en_regle"
-            value={newLocataire.en_regle}
-            onChange={handleNewLocataireChange}
+            value={updateLocataire.en_regle}
+            onChange={(event) =>
+              setUpdateLocataire({ ...updateLocataire, en_regle: event.target.value })
+            }
             sx={{ m: 1 }}
-          />
+          >
+            <MenuItem value="true">Oui</MenuItem>
+            <MenuItem value="false">Non</MenuItem>
+          </TextField>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setIsAddLocataireModalOpen(false)} color="primary">
@@ -382,6 +390,7 @@ const [open, setOpen] = useState(false);
           <TextField
             label="Appartement ID"
             name="appartement_id"
+            type="number"
             value={updateLocataire.appartement_id}
             onChange={(event) =>
               setUpdateLocataire({ ...updateLocataire, appartement_id: event.target.value })
@@ -409,6 +418,7 @@ const [open, setOpen] = useState(false);
           <TextField
             label="Date Entrée"
             name="date_entree"
+            helperText="AAAA-MM-JJ (Ex:2023-01-15)"
             value={updateLocataire.date_entree}
             onChange={(event) =>
               setUpdateLocataire({ ...updateLocataire, date_entree: event.target.value })
@@ -418,6 +428,7 @@ const [open, setOpen] = useState(false);
           <TextField
             label="Date Sortie"
             name="date_sortie"
+            helperText="AAAA-MM-JJ (Ex:2023-12-15)"
             value={updateLocataire.date_sortie}
             onChange={(event) =>
               setUpdateLocataire({ ...updateLocataire, date_sortie: event.target.value })
@@ -427,6 +438,7 @@ const [open, setOpen] = useState(false);
           <TextField
             label="Solde"
             name="solde"
+            type="number"
             value={updateLocataire.solde}
             onChange={(event) =>
               setUpdateLocataire({ ...updateLocataire, solde: event.target.value })
@@ -434,6 +446,7 @@ const [open, setOpen] = useState(false);
             sx={{ m: 1 }}
           />
           <TextField
+            select
             label="En Règle"
             name="en_regle"
             value={updateLocataire.en_regle}
@@ -441,7 +454,10 @@ const [open, setOpen] = useState(false);
               setUpdateLocataire({ ...updateLocataire, en_regle: event.target.value })
             }
             sx={{ m: 1 }}
-          />
+          >
+            <MenuItem value="true">Oui</MenuItem>
+            <MenuItem value="false">Non</MenuItem>
+          </TextField>
           
         </DialogContent>
         <DialogActions>
@@ -495,6 +511,7 @@ const [open, setOpen] = useState(false);
             <TextField
               label="Start Date"
               name="start_date"
+              helperText="AAAA-MM-JJ (Ex:2023-01-15)"
               value={formData.start_date}
               onChange={handleChange}
               sx={{m: 1}}
@@ -503,6 +520,7 @@ const [open, setOpen] = useState(false);
             <TextField
               label="End date"
               name="end_date"
+              helperText="AAAA-MM-JJ (Ex:2023-12-15)"
               value={formData.end_date}
               onChange={handleChange}
               sx={{m: 1}}
