@@ -189,6 +189,21 @@ const Locataires = () => {
         </Button>
       ),
     },
+    {
+      field: 'fetchAllPayments',
+      headerName: 'Bilan des comptes',
+      sortable: false,
+      width: 120,
+      renderCell: (params) => (
+        <Button
+          variant="contained"
+          color="success"
+          onClick={() => handleGetAllPaiement(params.row)}
+        >
+          Bilan
+        </Button>
+      ),
+    },
 ];
 
 const [open, setOpen] = useState(false);
@@ -198,8 +213,6 @@ const [open, setOpen] = useState(false);
     start_date: '',
     end_date: '',
   });
-  const [payments, setPayments] = useState([]);
-  //const [pdfData, setPdfData] = useState(null);
 
 
   const handleOpen = () => setOpen(true);
@@ -213,30 +226,6 @@ const [open, setOpen] = useState(false);
     });
   };
 
-  /*const handleSubmit = () => {
-    // Adjust the URL based on your Flask API endpoint
-    axios.post('http://localhost:5000/paiements/filter', formData)
-      .then((response) => {
-        setPayments(response.data);
-        setOpen(true);
-      })
-      .catch((error) => {
-        console.error('Error fetching payments:', error);
-      });
-  };*/
-
-
-  /*const handleDownload = async () => {
-    try {
-      const response = await axios.post('http://localhost:5000/paiements/filter', formData, { responseType: 'blob' });
-
-      const blob = new Blob([response.data], { type: 'application/pdf' });
-      const url = URL.createObjectURL(blob);
-      setPdfData(url);
-    } catch (error) {
-      console.error('Error downloading PDF:', error);
-    }
-  };*/
 
 
   const handleGetPaiement = (locataire) => {
@@ -249,6 +238,32 @@ const [open, setOpen] = useState(false);
     });
     handleOpen(); // Open the dialog
   };
+
+  const handleGetAllPaiement = async (locataire) => {
+  const locataireId = locataire.id;
+  const appartementId = locataire.appartement_id;
+
+  try {
+    // Make a request to the /all_paiements endpoint with locataire_id and appartement_id
+    const response = await axios.post('http://localhost:5000/all_paiements', {
+      locataire_id: locataireId,
+      appartement_id: appartementId,
+    }, {
+      responseType: 'arraybuffer',
+    });
+
+    // Create a Blob from the response data
+    const blob = new Blob([response.data], { type: 'application/pdf' });
+
+    // Trigger a file download using the FileSaver library
+    saveAs(blob, 'payment_details.pdf');
+  } catch (error) {
+    console.error('Error generating PDF:', error);
+    // Handle error accordingly, e.g., show an error message to the user
+  }
+};
+
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -265,7 +280,6 @@ const [open, setOpen] = useState(false);
       // Handle error accordingly, e.g., show an error message to the user
     }
   };
-
  
   
   return (

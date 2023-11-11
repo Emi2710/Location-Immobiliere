@@ -1,7 +1,7 @@
 from flask import request, send_file
 from flask_restful import Resource
 from datetime import datetime, timedelta
-from crud.paiement.crud import create_paiement, get_paiement, delete_paiement, update_paiement, get_all_paiements, get_locataire_by_paiement_locataire_id,get_appartement_by_paiement_appartement_id, get_paiements_by_info_and_period, generate_pdf
+from crud.paiement.crud import create_paiement, get_paiement, delete_paiement, update_paiement, get_all_paiements, get_locataire_by_paiement_locataire_id,get_appartement_by_paiement_appartement_id, get_paiements_by_info_and_period, generate_pdf, get_paiements_by_locataire_and_appartement
 
 class PaiementResource(Resource):
     def post(self):
@@ -110,3 +110,27 @@ class PaiementByFiltersResource(Resource):
             )
         else:
             return {'message': 'No payments found for the specified criteria.'}, 404
+
+class PaymentsByLocataireAndAppartementResource(Resource):
+    def post(self):
+        data = request.json
+        locataire_id = data.get('locataire_id')
+        appartement_id = data.get('appartement_id')
+
+        if not locataire_id or not appartement_id:
+            return {'error': 'Missing parameters: locataire_id and appartement_id are required.'}, 400
+
+        # Call a function to retrieve payments based on locataire_id and appartement_id
+        payments = get_paiements_by_locataire_and_appartement(locataire_id, appartement_id)
+
+        if payments:
+            # Generate PDF and send it as a response
+            pdf_buffer = generate_pdf(payments)
+            return send_file(
+                pdf_buffer,
+                download_name="payment_details.pdf",
+                as_attachment=True,
+                mimetype="application/pdf"
+            )
+        else:
+            return {'message': 'No payments found for the specified locataire_id and appartement_id.'}, 404

@@ -183,3 +183,34 @@ def generate_pdf(payments):
     pdf.build(elements)
     buffer.seek(0)
     return buffer
+
+def get_paiements_by_locataire_and_appartement(locataire_id, appartement_id):
+    conn = create_connection()
+    cur = conn.cursor()
+
+    query = sql.SQL("""
+        SELECT p.*
+        FROM paiement p
+        WHERE p.locataire_id = %s
+        AND p.appartement_id = %s
+        ORDER BY p.date_paiement DESC
+    """)
+
+    cur.execute(query, (locataire_id, appartement_id))
+
+    paiements = cur.fetchall()
+    conn.close()
+
+    if paiements:
+        # Convert date objects to ISO format strings
+        formatted_paiements = [{
+            "id": row[0],
+            "locataire_id": row[1],
+            "appartement_id": row[2],
+            "date_paiement": row[3].isoformat(),
+            "origine_paiement": row[4],
+            "cout": row[5]
+        } for row in paiements]
+        return formatted_paiements
+    else:
+        return []

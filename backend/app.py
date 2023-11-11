@@ -1,9 +1,9 @@
-from flask import Flask, request, redirect, url_for, session, jsonify
+from flask import Flask
 from flask_restful import Api
 
 from crud.appartement.routes import AppartementResource, AppartementDetailResource, AppartementByLocataireAppartementResource
 from crud.locataire.routes import LocataireResource, LocataireDetailResource, LocataireByAppartementResource
-from crud.paiement.routes import PaiementResource, PaiementDetailResource, LocataireByPaiementLocataireResource, AppartementByPaiementAppartementResource, PaiementByFiltersResource
+from crud.paiement.routes import PaiementResource, PaiementDetailResource, LocataireByPaiementLocataireResource, AppartementByPaiementAppartementResource, PaiementByFiltersResource, PaymentsByLocataireAndAppartementResource
 import os
 from dotenv import load_dotenv
 from flask_cors import CORS
@@ -21,51 +21,7 @@ CORS(app, supports_credentials=True, origins='http://localhost:3000')  # Replace
 # Secret key for session management
 app.secret_key = os.environ.get('SECRET_KEY')
 
-'''
-app.config['SESSION_TYPE'] = 'filesystem'
 
-Session(app)
-
-# Sample user data (replace with your user database)
-users = {
-    os.environ.get('USER_NAME'): os.environ.get('USER_PASSWORD'),
-}
-
-# Authentication route
-@app.route('/login', methods=['POST'])
-def login():
-    if 'username' in session:
-        return 'Already logged in as ' + session['username']
-
-    username = request.json.get('username')
-    password = request.json.get('password')
-
-    if username in users and users[username] == password:
-        session['username'] = username
-        return 'Logged in successfully'
-    else:
-        return 'Login failed', 401
-
-# Logout route
-@app.route('/logout', methods=['GET'])
-def logout():
-    session.pop('username', None)
-    return 'Logged out'
-
-# Protected route (requires authentication)
-@app.route('/protected', methods=['GET'])
-def protected_route():
-    if 'username' in session:
-        return 'This route is protected and requires authentication. You are logged in as ' + session['username']
-    else:
-        return 'Not authenticated', 401
-
-# Define a before_request function to check authentication before any route
-@app.before_request
-def check_authentication():
-    if request.endpoint and request.endpoint != 'login' and 'username' not in session:
-        return 'Not authenticated', 401
-'''
 
 # Add your resource routes as before
 api.add_resource(AppartementResource, '/appartements')
@@ -82,6 +38,8 @@ api.add_resource(LocataireByPaiementLocataireResource, '/paiements/locataire_by_
 api.add_resource(AppartementByPaiementAppartementResource, '/paiements/appartement_by_paiement_appartement_id/<int:paiement_appartement_id>')
 
 api.add_resource(PaiementByFiltersResource, '/paiements/filter')
+api.add_resource(PaymentsByLocataireAndAppartementResource, '/all_paiements')
+
 
 if __name__ == '__main__':
     app.run()
