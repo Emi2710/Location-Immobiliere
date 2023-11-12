@@ -7,7 +7,6 @@ from crud.paiement.routes import PaiementResource, PaiementDetailResource, Locat
 import os
 from dotenv import load_dotenv
 from flask_cors import CORS
-from flask_session import Session
 
 # Load environment variables from the .env file
 load_dotenv()
@@ -19,7 +18,8 @@ CORS(app, supports_credentials=True, origins='http://localhost:3000')  # Replace
 
 
 # Secret key for session management
-app.secret_key = os.environ.get('SECRET_KEY')
+port = int(os.environ.get('PORT'))
+
 
 
 
@@ -42,4 +42,4 @@ api.add_resource(PaymentsByLocataireAndAppartementResource, '/all_paiements')
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0', port=port)
