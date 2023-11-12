@@ -13,7 +13,7 @@ flask-restful = "*"
 flask-login = "*"
 flask-session = "*"
 reportlab = "*"
-gunicorn = "*"
+gunicorn = "==20.1.0"
 
 [dev-packages]
 
