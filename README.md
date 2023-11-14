@@ -15,7 +15,7 @@ Ci dessous les démarches de déploiment en local.
 Cloner le projet
 
 ```bash
-    git clone https://github.com/Emi2710/Sportelia-App](https://github.com/Emi2710/Location-Immobiliere
+    git clone https://github.com/Emi2710/Location-Immobiliere
 ```
 
 Accéder au backend
