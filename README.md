@@ -47,7 +47,20 @@ Exectuer le fichier database.sql
     \i database.sql
 ```
 
-Sortir du terminal et lancer le serveur de développement
+Sortir du terminal 
+
+Définir les variables d'environnement
+DB_NAME=location_immobiliere
+DB_USER=(votre nom d'utilisateuer postgres)
+DB_PASSWORD=(votre mot de passe postgres)
+DB_HOST=localhost
+
+PORT=5000
+
+```bash
+    flask run 
+```
+Lancer le serveur de développement
 
 ```bash
     flask run 
