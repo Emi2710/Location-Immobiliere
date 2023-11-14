@@ -50,16 +50,20 @@ Exectuer le fichier database.sql
 Sortir du terminal 
 
 Définir les variables d'environnement
+```bash
 DB_NAME=location_immobiliere
 DB_USER=(votre nom d'utilisateuer postgres)
 DB_PASSWORD=(votre mot de passe postgres)
 DB_HOST=localhost
 
 PORT=5000
-
-```bash
-    flask run 
 ```
+Créer un fichier .flaskenv et ajouter les variables suivantes:
+```bash
+FLASK_APP=app
+FLASK_ENV=development
+```
+
 Lancer le serveur de développement
 
 ```bash
