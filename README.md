@@ -1,5 +1,9 @@
 # Examen certifiant du bloc - Développement d'une solution digitale avec Python
 
+
+https://github.com/Emi2710/Location-Immobiliere/assets/72699699/a69604a4-d706-4e1d-b0e0-80af7a95df9e
+
+
 Ce projet a été réalisé dans le cadre de l'examen certifiant du bloc - Développement d'une solution digitale avec Python
 
 Le but était de développer une application web de gestion de location immobilière pour un client. Le client peut ajouter des appartements et affecter aux appartements de son choix un locataire. Le client peut également ajouter pour chaque locataire des paiements et générer des bilans des comptes en pdf.
