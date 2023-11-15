@@ -5,7 +5,7 @@ Ce projet a été réalisé dans le cadre de l'examen certifiant du bloc - Déve
 Le but était de développer une application web de gestion de location immobilière pour un client. Le client peut ajouter des appartements et affecter aux appartements de son choix un locataire. Le client peut également ajouter pour chaque locataire des paiements et générer des bilans des comptes en pdf.
 
 
-Voici le lien vers mon logiciel de gestion pour ce projet:: Suivre [ce lien]()
+Voici le lien vers mon logiciel de gestion pour ce projet:: Suivre [ce lien](https://organic-perch-114.notion.site/Gestion-de-projet-application-web-de-location-immobili-re-6924c4b80e8c49a88a0a86cbe1dfa327?pvs=4)
 
 Ci dessous les démarches de déploiment en local.
 
@@ -93,4 +93,4 @@ Vous pouvez maintenant tester l'application et les fonctionnalités
 
 ### Vous retrouverez mes livrables ici :
 
-Suivre [ce lien]() 
+Suivre [ce lien](https://organic-perch-114.notion.site/Gestion-de-projet-application-web-de-location-immobili-re-6924c4b80e8c49a88a0a86cbe1dfa327?pvs=4) 
